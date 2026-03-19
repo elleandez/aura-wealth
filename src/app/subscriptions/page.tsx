@@ -16,7 +16,7 @@ const tiers = [
   },
   {
     name: "Syndicate",
-    price: "$499/mo",
+    price: "$10/mo",
     desc: "Aggressive debt annihilation and legal forensic auditing.",
     features: ["Forensic Bureau Disputes", "Identity Theft Protection", "Priority Support", "Private Lending Access"],
     icon: <Shield className="text-blue-500" />,

@@ -11,7 +11,7 @@ export default function ChatWidget() {
   const [input, setInput] = useState("");
   
   const [messages, setMessages] = useState<{role: 'agent'|'user', text: string}[]>([
-    { role: 'agent', text: 'AURA Concierge initialized. To establish a secure two-way line, please provide your email address.' }
+    { role: 'agent', text: 'AURA Concierge initialized. To Connect You To A Customer Service Agent , please provide your email address.' }
   ]);
 
   const handleSend = async () => {
@@ -40,7 +40,7 @@ export default function ChatWidget() {
       setInput("");
       setStep('processing');
       
-      setMessages(prev => [...prev, { role: 'agent', text: 'Encrypting transmission and alerting Founding Partners...' }]);
+      setMessages(prev => [...prev, { role: 'agent', text: 'Connecting You To A Customer Service Agent...' }]);
 
       try {
         const response = await fetch("/api/chat", {
@@ -73,7 +73,7 @@ export default function ChatWidget() {
         onClick={() => setIsOpen(true)}
         className={`${isOpen ? 'hidden' : 'flex'} items-center gap-3 bg-emerald-500 text-[#050813] px-6 py-4 rounded-full font-bold uppercase tracking-widest text-sm shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:scale-105 transition-transform`}
       >
-        <MessageSquare className="w-5 h-5" /> Secure Link
+        <MessageSquare className="w-5 h-5" /> CHAT
       </button>
 
       <AnimatePresence>

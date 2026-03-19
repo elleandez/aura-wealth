@@ -118,7 +118,7 @@ export default function Navbar() {
               <div className="pt-8">
                 {/* Mobile Portal Link - LINKED TO /PORTAL */}
                 <Link href="/portal" onClick={closeMenu} className="block w-full py-4 text-center bg-emerald-500 text-black font-bold tracking-widest uppercase rounded-sm">
-                  Client Portal
+                  Portal
                 </Link>
               </div>
             </div>

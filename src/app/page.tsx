@@ -27,14 +27,6 @@ export default function Home() {
   const yHero1 = useTransform(hero1Scroll, [0, 1], ["0%", "50%"]);
   const opacityHero1 = useTransform(hero1Scroll, [0, 0.8], [1, 0]);
 
-  // Sticky Manifesto (Extended to 400vh for a much longer scroll)
-  const manifestoRef = useRef(null);
-  const { scrollYProgress: manifestoScroll } = useScroll({ target: manifestoRef, offset: ["start start", "end end"] });
-  const text1Op = useTransform(manifestoScroll, [0, 0.2, 0.3], [0, 1, 0]);
-  const text2Op = useTransform(manifestoScroll, [0.3, 0.5, 0.6], [0, 1, 0]);
-  const text3Op = useTransform(manifestoScroll, [0.6, 0.8, 1], [0, 1, 1]);
-  const scaleManifestoBg = useTransform(manifestoScroll, [0, 1], [1, 1.3]);
-
   // Infrastructure Parallax
   const infraRef = useRef(null);
   const { scrollYProgress: infraScroll } = useScroll({ target: infraRef, offset: ["start end", "end start"] });
@@ -60,7 +52,6 @@ export default function Home() {
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               <span className="text-xs font-medium tracking-[0.2em] text-emerald-300 uppercase">AURA Wealth Management</span>
             </div>
-            {/* Fixed the straight line issue by forcing line breaks and text wrapping */}
             <h1 className="text-6xl md:text-[9rem] font-light tracking-tighter leading-[0.85] mb-8 max-w-5xl mx-auto">
               Absolute <br className="hidden md:block" />
               <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-emerald-100 to-emerald-600">
@@ -83,7 +74,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. INFINITE SCROLL TICKER (Adds visual length and motion) */}
+      {/* 2. INFINITE SCROLL TICKER */}
       <div className="py-6 bg-emerald-950/20 border-y border-emerald-500/20 overflow-hidden flex whitespace-nowrap">
         <motion.div 
           animate={{ x: ["0%", "-50%"] }} 
@@ -103,36 +94,41 @@ export default function Home() {
         </motion.div>
       </div>
 
-      {/* 3. STICKY MANIFESTO (400vh - extremely long scroll) */}
-      <section ref={manifestoRef} className="h-[400vh] relative bg-[#050813]">
-        <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
-          <motion.div style={{ scale: scaleManifestoBg }} className="absolute inset-0 opacity-20">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-emerald-900/40 via-[#050813] to-[#050813] z-10" />
-            <div className="w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
-          </motion.div>
+      {/* 3. THE MANIFESTO (Rebuilt: No more sticky scroll trap. Massive Zig-Zag Typography) */}
+      <section className="py-40 px-6 relative bg-[#050813] overflow-hidden">
+        {/* Subtle grid background */}
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        <div className="absolute top-1/2 left-1/2 w-[800px] h-[800px] bg-red-900/10 rounded-full blur-[150px] -translate-x-1/2 -translate-y-1/2 z-0"></div>
 
-          <div className="relative z-20 max-w-5xl mx-auto px-6 text-center">
-            <motion.h2 style={{ opacity: text1Op }} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-5xl md:text-8xl font-light tracking-tighter">
+        <div className="relative z-10 max-w-6xl mx-auto flex flex-col gap-32">
+          
+          <FadeUp>
+            <h2 className="text-5xl md:text-[6rem] font-light tracking-tighter leading-[1.1]">
               The system is designed to <br/><span className="text-red-500/80 font-medium">keep you liable.</span>
-            </motion.h2>
-            
-            <motion.h2 style={{ opacity: text2Op }} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-5xl md:text-8xl font-light tracking-tighter">
+            </h2>
+          </FadeUp>
+          
+          <FadeUp delay={0.2} className="text-right">
+            <h2 className="text-5xl md:text-[6rem] font-light tracking-tighter leading-[1.1]">
               Credit bureaus thrive on your <br/><span className="text-gray-500 font-medium">financial stagnation.</span>
-            </motion.h2>
+            </h2>
+          </FadeUp>
 
-            <motion.div style={{ opacity: text3Op }} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full">
-               <h2 className="text-5xl md:text-8xl font-light tracking-tighter mb-8">
-                  We rewrite the <br/><span className="text-emerald-500 font-medium">algorithm.</span>
-               </h2>
-               <p className="text-2xl text-gray-400 font-light max-w-3xl mx-auto leading-relaxed">
+          <FadeUp delay={0.4}>
+             <h2 className="text-5xl md:text-[6rem] font-light tracking-tighter leading-[1.1] mb-8">
+                We rewrite the <span className="text-emerald-500 font-medium">algorithm.</span>
+             </h2>
+             <div className="border-l-2 border-emerald-500 pl-8">
+               <p className="text-2xl text-gray-400 font-light max-w-3xl leading-relaxed">
                  By leveraging proprietary legal frameworks and private liquidity pools, AURA completely isolates you from retail banking constraints.
                </p>
-            </motion.div>
-          </div>
+             </div>
+          </FadeUp>
+
         </div>
       </section>
 
-      {/* 4. THE PHILOSOPHY (Forces vertical reading) */}
+      {/* 4. THE PHILOSOPHY */}
       <section className="py-40 px-6 bg-[#02030A]">
         <div className="max-w-4xl mx-auto">
           <FadeUp>
@@ -144,7 +140,6 @@ export default function Home() {
           </FadeUp>
           <div className="space-y-12 border-l border-white/10 pl-8 md:pl-12">
             <FadeUp delay={0.2}>
-              {/* Max-w-2xl forces perfect wrapping, no more straight lines */}
               <p className="text-xl text-gray-400 font-light leading-relaxed max-w-2xl">
                 Most financial advisors teach you how to save. We teach you how to structure. If your capital is tied to your social security number, visible to public records, and subject to standard credit reporting, you are exposed.
               </p>
@@ -163,7 +158,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. THE ARSENAL (Staggered Bento Grid - Perfect Wrapping) */}
+      {/* 5. THE ARSENAL (Staggered Bento Grid) */}
       <section className="py-40 px-6 relative bg-[#050813] border-t border-white/5">
         <div className="max-w-7xl mx-auto">
           <FadeUp className="mb-24">
@@ -178,7 +173,6 @@ export default function Home() {
               <div>
                  <Anchor className="w-12 h-12 text-white mb-6 group-hover:text-emerald-400 transition-colors" />
                  <h3 className="text-4xl font-medium mb-4 relative z-10">Debt Annihilation</h3>
-                 {/* Controlled width to prevent single-line stretching */}
                  <p className="text-gray-400 text-lg leading-relaxed relative z-10 max-w-lg">We weaponize compliance and consumer law to permanently erase derogatory marks and forcefully settle bad debt for pennies on the dollar.</p>
               </div>
               <Link href="/credit-management" className="relative z-10 w-fit mt-12 flex items-center gap-2 text-emerald-500 font-bold uppercase tracking-widest text-sm group-hover:text-emerald-300">
@@ -210,7 +204,6 @@ export default function Home() {
               </Link>
             </FadeUp>
 
-            {/* Changed from row to explicit col-on-mobile, row-on-desktop, with perfect text wrapping */}
             <FadeUp delay={0.4} className="lg:col-span-2 group relative bg-[#0A1024] border border-white/5 p-10 overflow-hidden hover:border-amber-500/50 transition-all duration-700 rounded-3xl flex flex-col md:flex-row items-start md:items-center justify-between gap-10">
               <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-[100px] translate-y-1/2 transition-all duration-700 group-hover:bg-amber-500/20"></div>
               <div className="relative z-10 max-w-xl">
@@ -228,7 +221,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. GLOBAL INFRASTRUCTURE (Massive new section for pure length) */}
+      {/* 6. GLOBAL INFRASTRUCTURE */}
       <section ref={infraRef} className="py-40 relative overflow-hidden bg-[#020308]">
         <motion.div style={{ y: yInfra }} className="absolute inset-0 z-0 opacity-20">
           <div className="absolute inset-0 bg-[#020308]/50 z-10" />
@@ -272,7 +265,6 @@ export default function Home() {
                   <FadeUp>
                      <Cpu className="w-12 h-12 text-emerald-500 mb-8" />
                      <h2 className="text-5xl md:text-7xl font-light tracking-tighter mb-8">Data-driven <br/>Dominance.</h2>
-                     {/* Text wraps beautifully here now */}
                      <p className="text-xl text-gray-400 leading-relaxed mb-8 max-w-lg">
                        Our in-house cybersecurity and analytics teams actively monitor market volatility and credit algorithms. We compute the exact moment to strike for loan approvals and debt settlements.
                      </p>
@@ -298,7 +290,7 @@ export default function Home() {
          </div>
       </section>
 
-      {/* 8. THE QUALIFICATION GATE (Adds elite exclusivity and more length) */}
+      {/* 8. THE QUALIFICATION GATE */}
       <section className="py-40 px-6 bg-[#02030A]">
         <div className="max-w-5xl mx-auto text-center">
           <FadeUp>

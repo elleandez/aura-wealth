@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Terminal, FileWarning, ShieldAlert, Gavel, CheckCircle, ArrowRight, Activity, Fingerprint } from "lucide-react";
+import { Terminal, FileWarning, ShieldAlert, Gavel, CheckCircle, Activity, Fingerprint } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
 
@@ -21,10 +21,12 @@ const FadeUp = ({ children, delay = 0, className = "" }: { children: React.React
 export default function CreditManagement() {
   const containerRef = useRef(null);
   
-  // Horizontal Scroll Magic
+  // BULLETPROOF HORIZONTAL SCROLL
   const horizontalRef = useRef(null);
   const { scrollYProgress: horizontalScroll } = useScroll({ target: horizontalRef });
-  const xTransform = useTransform(horizontalScroll, [0, 1], ["0%", "-75%"]); // Moves content left as you scroll down
+  
+  // We have 4 slides. Moving from 0% to -75% on a 400vw container shifts it exactly 3 screens over.
+  const xTransform = useTransform(horizontalScroll, [0, 1], ["0%", "-75%"]); 
 
   // Hero Parallax
   const heroRef = useRef(null);
@@ -38,7 +40,6 @@ export default function CreditManagement() {
       {/* 1. DATA-GLITCH HERO SECTION */}
       <section ref={heroRef} className="relative h-[120vh] flex items-center justify-center overflow-hidden">
         <motion.div style={{ y: heroY, opacity: heroOpacity }} className="absolute inset-0 z-0">
-           {/* Abstract dark red/black gradient background representing "Bad Debt" */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-900/20 via-[#03050A] to-[#03050A] z-10" />
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 z-10"></div>
         </motion.div>
@@ -72,7 +73,7 @@ export default function CreditManagement() {
         </div>
       </section>
 
-      {/* 2. THE HARSH REALITY - Text Reveal */}
+      {/* 2. THE HARSH REALITY */}
       <section className="py-40 px-6 relative z-20 bg-[#03050A] border-t border-white/5">
          <div className="max-w-5xl mx-auto text-center">
             <FadeUp>
@@ -88,62 +89,71 @@ export default function CreditManagement() {
          </div>
       </section>
 
-      {/* 3. HORIZONTAL SCROLL SEQUENCE (The 400vh Beast) */}
+      {/* 3. HORIZONTAL SCROLL SEQUENCE (BULLETPROOF MATH) */}
       <section ref={horizontalRef} className="h-[400vh] relative bg-[#050813]">
         <div className="sticky top-0 h-screen flex items-center overflow-hidden border-y border-white/10">
           
-          {/* Background element that stays sticky */}
-          <div className="absolute top-10 left-10 text-emerald-500/10 text-[20rem] font-bold tracking-tighter z-0 pointer-events-none">
+          {/* Background element */}
+          <div className="absolute top-1/2 -translate-y-1/2 left-10 text-emerald-500/5 text-[15rem] md:text-[20rem] font-bold tracking-tighter z-0 pointer-events-none">
             METHOD
           </div>
 
-          <motion.div style={{ x: xTransform }} className="flex gap-20 px-[10vw] relative z-10 w-[400vw]">
+          {/* Wrapper is explicitly 400vw wide (4 screens) */}
+          <motion.div style={{ x: xTransform }} className="flex w-[400vw] relative z-10">
             
-            {/* Slide 1 */}
-            <div className="w-[80vw] md:w-[60vw] flex flex-col justify-center shrink-0">
-               <div className="text-emerald-500 font-bold tracking-[0.3em] uppercase mb-4 flex items-center gap-4">
-                 <span className="w-8 h-[1px] bg-emerald-500"></span> Phase 01
+            {/* Slide 1 - Explicitly 1 screen wide */}
+            <div className="w-screen flex flex-col justify-center px-[10vw] md:px-[15vw]">
+               <div className="max-w-3xl">
+                 <div className="text-emerald-500 font-bold tracking-[0.3em] uppercase mb-4 flex items-center gap-4">
+                   <span className="w-8 h-[1px] bg-emerald-500"></span> Phase 01
+                 </div>
+                 <h3 className="text-5xl md:text-8xl font-light tracking-tighter mb-8">Forensic <br/>Audit.</h3>
+                 <p className="text-xl md:text-2xl text-gray-400 font-light leading-relaxed">
+                   We do not send generic dispute letters. Our paralegal team pulls your raw data across all three bureaus and runs a forensic cross-examination to find microscopic compliance violations.
+                 </p>
                </div>
-               <h3 className="text-6xl md:text-8xl font-light tracking-tighter mb-8">Forensic <br/>Audit.</h3>
-               <p className="text-2xl text-gray-400 font-light leading-relaxed max-w-xl">
-                 We do not send generic dispute letters. Our paralegal team pulls your raw data across all three bureaus and runs a forensic cross-examination to find microscopic compliance violations.
-               </p>
             </div>
 
             {/* Slide 2 */}
-            <div className="w-[80vw] md:w-[60vw] flex flex-col justify-center shrink-0">
-               <div className="text-emerald-500 font-bold tracking-[0.3em] uppercase mb-4 flex items-center gap-4">
-                 <span className="w-8 h-[1px] bg-emerald-500"></span> Phase 02
+            <div className="w-screen flex flex-col justify-center px-[10vw] md:px-[15vw]">
+               <div className="max-w-3xl">
+                 <div className="text-emerald-500 font-bold tracking-[0.3em] uppercase mb-4 flex items-center gap-4">
+                   <span className="w-8 h-[1px] bg-emerald-500"></span> Phase 02
+                 </div>
+                 <h3 className="text-5xl md:text-8xl font-light tracking-tighter mb-8">Legal <br/>Invalidation.</h3>
+                 <p className="text-xl md:text-2xl text-gray-400 font-light leading-relaxed">
+                   We draft bespoke legal demands citing specific FCRA and FDCPA statutes. We target the original creditors, collection agencies, and the bureaus simultaneously, trapping them in a compliance crossfire.
+                 </p>
                </div>
-               <h3 className="text-6xl md:text-8xl font-light tracking-tighter mb-8">Legal <br/>Invalidation.</h3>
-               <p className="text-2xl text-gray-400 font-light leading-relaxed max-w-xl">
-                 We draft bespoke legal demands citing specific FCRA and FDCPA statutes. We target the original creditors, collection agencies, and the bureaus simultaneously, trapping them in a compliance crossfire.
-               </p>
             </div>
 
             {/* Slide 3 */}
-            <div className="w-[80vw] md:w-[60vw] flex flex-col justify-center shrink-0">
-               <div className="text-emerald-500 font-bold tracking-[0.3em] uppercase mb-4 flex items-center gap-4">
-                 <span className="w-8 h-[1px] bg-emerald-500"></span> Phase 03
+            <div className="w-screen flex flex-col justify-center px-[10vw] md:px-[15vw]">
+               <div className="max-w-3xl">
+                 <div className="text-emerald-500 font-bold tracking-[0.3em] uppercase mb-4 flex items-center gap-4">
+                   <span className="w-8 h-[1px] bg-emerald-500"></span> Phase 03
+                 </div>
+                 <h3 className="text-5xl md:text-8xl font-light tracking-tighter mb-8">Forceful <br/>Erasure.</h3>
+                 <p className="text-xl md:text-2xl text-gray-400 font-light leading-relaxed">
+                   When they fail to provide wet-ink signatures or verifiable proof of the debt—which happens 85% of the time—we force the deletion. Late payments, charge-offs, bankruptcies, and repos are scrubbed.
+                 </p>
                </div>
-               <h3 className="text-6xl md:text-8xl font-light tracking-tighter mb-8">Forceful <br/>Erasure.</h3>
-               <p className="text-2xl text-gray-400 font-light leading-relaxed max-w-xl">
-                 When they fail to provide wet-ink signatures or verifiable proof of the debt—which happens 85% of the time—we force the deletion. Late payments, charge-offs, bankruptcies, and repos are scrubbed.
-               </p>
             </div>
 
             {/* Slide 4 */}
-            <div className="w-[80vw] md:w-[60vw] flex flex-col justify-center shrink-0 pr-[10vw]">
-               <div className="text-emerald-500 font-bold tracking-[0.3em] uppercase mb-4 flex items-center gap-4">
-                 <span className="w-8 h-[1px] bg-emerald-500"></span> Phase 04
+            <div className="w-screen flex flex-col justify-center px-[10vw] md:px-[15vw]">
+               <div className="max-w-3xl">
+                 <div className="text-emerald-500 font-bold tracking-[0.3em] uppercase mb-4 flex items-center gap-4">
+                   <span className="w-8 h-[1px] bg-emerald-500"></span> Phase 04
+                 </div>
+                 <h3 className="text-5xl md:text-8xl font-light tracking-tighter mb-8">Credit <br/>Architecture.</h3>
+                 <p className="text-xl md:text-2xl text-gray-400 font-light leading-relaxed mb-12">
+                   Once the foundation is clean, we rebuild. We install high-limit primary tradelines and structure your profile to trigger automatic approvals from Tier-1 banking algorithms.
+                 </p>
+                 <Link href="/contact-us" className="w-fit px-10 py-5 bg-emerald-500 text-black font-bold text-sm tracking-widest uppercase hover:bg-white hover:scale-105 transition-all duration-300">
+                   Begin Architecture
+                 </Link>
                </div>
-               <h3 className="text-6xl md:text-8xl font-light tracking-tighter mb-8">Credit <br/>Architecture.</h3>
-               <p className="text-2xl text-gray-400 font-light leading-relaxed max-w-xl mb-12">
-                 Once the foundation is clean, we rebuild. We install high-limit primary tradelines and structure your profile to trigger automatic approvals from Tier-1 banking algorithms.
-               </p>
-               <Link href="/contact-us" className="w-fit px-10 py-5 bg-emerald-500 text-black font-bold text-sm tracking-widest uppercase hover:bg-white hover:scale-105 transition-all duration-300">
-                 Begin Architecture
-               </Link>
             </div>
 
           </motion.div>
