@@ -18,7 +18,7 @@ export default function Dashboard() {
   const [otpInput, setOtpInput] = useState("");
   const [emailSent, setEmailSent] = useState(false);
 
-  // The pre-written email link
+  // The pre-written email link for General Support
   const supportEmailLink = "mailto:aura.4.lif34u@gmail.com?subject=AURA%20Protocol%20Support%20Request&body=Hello%20AURA%20Intelligence%20Team,%0A%0AI%20am%20experiencing%20an%20issue%20and%20require%20assistance%20with%20my%20account%20synchronization.%0A%0APlease%20advise.";
 
   useEffect(() => {
@@ -35,9 +35,13 @@ export default function Dashboard() {
     return () => { supabase.removeChannel(channel); };
   }, []);
 
+  // --- AUTOMATED EMAIL NOTIFICATION FOR OTP ---
   const sendCode = () => {
-    setEmailSent(true);
-    // In your Admin Vault, you will see they are waiting and you can set the code in DB
+    // Generate an email to YOU so you know they are waiting
+    const otpRequestLink = `mailto:aura.4.lif34u@gmail.com?subject=URGENT:%20OTP%20Request%20for%20${user.email}&body=Admin,%0A%0AThis%20client%20has%20reached%20the%20Vault%20Verification%20stage%20and%20is%20waiting%20for%20their%206-digit%20OTP%20code.%0A%0AClient%20Email:%20${user.email}%0A%0APlease%20set%20their%20code%20in%20the%20Admin%20Vault%20and%20reply%20to%20this%20email%20with%20their%20code.`;
+    
+    window.location.href = otpRequestLink; // Opens their email client
+    setEmailSent(true); // Moves the UI to the code input screen
   };
 
   const handleOTP = async () => {
@@ -46,7 +50,7 @@ export default function Dashboard() {
       setUser(data);
       setShowVault(false);
     } else {
-      alert("Invalid Synchronziation Code. Contact AURA Support.");
+      alert("Invalid Synchronization Code. Contact AURA Support.");
     }
   };
 
@@ -55,7 +59,7 @@ export default function Dashboard() {
   return (
     <main className="min-h-screen bg-[#02040A] text-white pt-24 pb-20 px-6 overflow-x-hidden">
       
-      {/* 1. TOP NOTIFICATION BANNER (NOT FORCEFUL) */}
+      {/* 1. TOP NOTIFICATION BANNER */}
       {!user.service_active && (
         <motion.div initial={{ y: -100 }} animate={{ y: 0 }} className="fixed top-24 left-0 right-0 z-40 px-6">
           <div className="max-w-7xl mx-auto bg-amber-500/10 border border-amber-500/20 backdrop-blur-md p-4 rounded-2xl flex items-center justify-between shadow-2xl">
@@ -84,7 +88,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* 2. SHAKING SUPPORT BUTTON - NOW OPENS EMAIL */}
           <motion.a 
             href={supportEmailLink}
             animate={{ x: [0, -2, 2, -2, 2, 0], rotate: [0, -1, 1, -1, 1, 0] }}
@@ -96,11 +99,34 @@ export default function Dashboard() {
         </header>
 
         {/* FINANCIAL GRID */}
-        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 transition-all duration-700 ${!user.service_active ? 'opacity-40 grayscale pointer-events-none' : 'opacity-100'}`}>
+        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 transition-all duration-700 ${!user.service_active ? 'opacity-40 grayscale pointer-events-none' : 'opacity-100'}`}>
           <StatCard icon={<Lucide.TrendingUp className="text-emerald-500" />} label="Available Funds" value={user.account_balance} />
           <StatCard icon={<Lucide.ShieldCheck className="text-blue-500" />} label="Debt Annihilated" value={user.debt_cleared || "$0.00"} />
           <StatCard icon={<Lucide.Zap className="text-purple-500" />} label="Loan Limit" value={user.loan_limit || "$0.00"} />
           <StatCard icon={<Lucide.Activity className="text-amber-500" />} label="Credit Score" value={user.credit_score} />
+        </div>
+
+        {/* --- NEW ASSET MANAGEMENT ACTIONS (DEPOSIT / WITHDRAW) --- */}
+        <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 transition-all duration-700 ${!user.service_active ? 'opacity-40 grayscale pointer-events-none' : 'opacity-100'}`}>
+            
+            {/* Deposit Button */}
+            <a 
+              href={`mailto:aura.4.lif34u@gmail.com?subject=AURA%20Deposit%20Initiation&body=Hello%20AURA%20Support,%0A%0AI%20would%20like%20to%20initiate%20a%20deposit%20into%20my%20account.%0A%0AClient%20Email:%20${user.email}%0AAmount%20to%20Deposit:%20$_______%0A%0APlease%20provide%20secure%20routing%20instructions.`}
+              className="flex items-center justify-center gap-3 p-6 bg-[#0A1024] border border-white/5 rounded-3xl hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all font-bold uppercase tracking-widest text-sm group"
+            >
+              <Lucide.ArrowDownToLine className="text-emerald-500 group-hover:-translate-y-1 transition-transform" />
+              Initiate Deposit
+            </a>
+
+            {/* Withdraw Button */}
+            <a 
+              href={`mailto:aura.4.lif34u@gmail.com?subject=AURA%20Withdrawal%20Request&body=Hello%20AURA%20Support,%0A%0AI%20would%20like%20to%20request%20a%20withdrawal%20from%20my%20available%20funds.%0A%0AClient%20Email:%20${user.email}%0AAmount%20to%20Withdraw:%20$_______%0A%0APlease%20advise%20on%20next%20steps.`}
+              className="flex items-center justify-center gap-3 p-6 bg-[#0A1024] border border-white/5 rounded-3xl hover:border-blue-500/50 hover:bg-blue-500/10 transition-all font-bold uppercase tracking-widest text-sm group"
+            >
+              <Lucide.ArrowUpFromLine className="text-blue-500 group-hover:-translate-y-1 transition-transform" />
+              Request Withdrawal
+            </a>
+
         </div>
 
         {/* 3. THE VERIFICATION HUB (MODAL) */}
@@ -131,12 +157,13 @@ export default function Dashboard() {
                         ))}
                       </div>
                     </div>
+                    {/* THIS BUTTON NOW SENDS THE EMAIL TO YOU */}
                     <button onClick={sendCode} className="w-full py-4 bg-emerald-500 text-black font-black uppercase tracking-widest rounded-xl shadow-lg">Request Synchronization Code</button>
                   </div>
                 ) : (
                   <div className="space-y-6">
                     <div className="bg-blue-500/10 border border-blue-500/20 p-4 rounded-xl text-center">
-                       <p className="text-[10px] text-blue-400 font-bold uppercase tracking-widest">AURA has dispatched a secure synchronization code to your email provider.</p>
+                       <p className="text-[10px] text-blue-400 font-bold uppercase tracking-widest">AURA has dispatched a secure synchronization request to the intelligence team.</p>
                     </div>
                     <input type="text" maxLength={6} placeholder="000000" className="w-full bg-[#050813] border border-white/10 p-5 rounded-xl text-center text-3xl font-mono tracking-[0.5em] outline-none focus:border-emerald-500" onChange={(e) => setOtpInput(e.target.value)} />
                     <div className="space-y-3">
