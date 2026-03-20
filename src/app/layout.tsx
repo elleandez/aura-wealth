@@ -5,13 +5,37 @@ import "./globals.css";
 // --- GLOBAL COMPONENTS ---
 import Navbar from "@/components/Navbar";
 import ChatWidget from "@/components/ChatWidget";
-import LiveActivityBubble from "@/components/LiveActivityBubble"; // <-- NEW IMPORT
+import LiveActivityBubble from "@/components/LiveActivityBubble"; 
 
 const inter = Inter({ subsets: ["latin"] });
 
+// --- GLOBAL METADATA (LOCKED IN LOGO CONVENTIONS) ---
 export const metadata: Metadata = {
-  title: "AURA | Elite Wealth & Debt Management",
-  description: "World-class fund management, loan structuring, and debt relief.",
+  // Replace with your live Vercel URL once deployed
+  metadataBase: new URL("https://aura-wealth.vercel.app"), 
+  
+  title: {
+    default: "AURA | Elite Wealth & Debt Management",
+    template: "%s | AURA",
+  },
+  description: "Advanced Wealth Management, Loan Structuring, and Debt Relief services for discerning clients.",
+  
+  // Icon and Open Graph configuration is handled automatically by Next.js
+  // by placing files in the /src/app/ folder.
+  openGraph: {
+    title: "AURA | Elite Wealth & Debt Management",
+    description: "Eradicate Debt. Structure Capital. Command your Financial Data.",
+    url: "https://aura-wealth.vercel.app",
+    siteName: "AURA Protocol",
+    locale: "en_US",
+    type: "website",
+  },
+  
+  twitter: {
+    card: "summary_large_image",
+    title: "AURA | Elite Wealth & Debt Management",
+    description: "Eradicate Debt. Structure Capital. Command your Financial Data.",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -21,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         
         <Navbar />
 
-        <main className="flex-grow pt-24 overflow-x-hidden">
+        <main className="flex-grow pt-24 overflow-x-hidden relative">
           {children}
         </main>
 
